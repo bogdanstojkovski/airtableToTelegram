@@ -1,3 +1,4 @@
+const express = require('express');
 const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
 
@@ -65,4 +66,14 @@ bot.on('callback_query', async (callbackQuery) => {
   }
 
   bot.answerCallbackQuery(callbackQuery.id);
+});
+
+const app = express();
+app.set('port', (process.env.PORT || 5000));
+
+app.get('/', function(request, response) {
+    var result = 'App is running'
+    response.send(result);
+}).listen(app.get('port'), function() {
+    console.log('App is running, server is listening on port ', app.get('port'));
 });
