@@ -1,2 +1,2 @@
-web: node server.js
+web: node airtabletotgnew.js
 worker: node airtabletotgnew.js
