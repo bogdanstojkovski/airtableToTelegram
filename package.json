@@ -1,5 +1,5 @@
 {
-  "name": "telegramBot",
+  "name": "telegrambot",
   "version": "1.0.0",
   "description": "Telegram bot that fetches data from Airtable and sends notifications.",
   "main": "index.js",
