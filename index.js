@@ -1,4 +1,3 @@
-const express = require('express');
 const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
 
@@ -6,7 +5,7 @@ const airtableApiKey = 'key6iKNmX2Ynpo6k8';
 const airtableBase = 'appFRjFTs1w91uxZj';
 const airtableTable = 'Payments';
 const telegramToken = '6158390327:AAE6gOf4Mqv4F2zaNmFifhckauLdgiC9BRA';
-const chatId = '5272022550';
+const chatIds = ['593152072', '5272022550'];
 
 let lastRecordTime = null;
 
@@ -37,14 +36,16 @@ setInterval(async () => {
 
     const message = `Paid: ${amount}\nTraffic Source: ${trafficSource}\nBuyer Name: ${buyerName}\nBuyer Username: ${buyerUsername}\nService: ${service}\nServiceInfo: ${serviceInfo}`;
 
-    await bot.sendMessage(chatId, message, {
-      reply_markup: {
-        inline_keyboard: [[
-          { text: 'Yes', callback_data: `update_yulia_yes:${record.id}` },
-          { text: 'No', callback_data: `update_yulia_no:${record.id}` }
-        ]]
-      }
-    });
+    for (const chatId of chatIds) {
+      await bot.sendMessage(chatId, message, {
+        reply_markup: {
+          inline_keyboard: [[
+            { text: 'Yes', callback_data: `update_yulia_yes:${record.id}` },
+            { text: 'No', callback_data: `update_yulia_no:${record.id}` }
+          ]]
+        }
+      });
+    }
   }
 }, 10000);
 
@@ -66,14 +67,4 @@ bot.on('callback_query', async (callbackQuery) => {
   }
 
   bot.answerCallbackQuery(callbackQuery.id);
-});
-
-const app = express();
-app.set('port', (process.env.PORT || 5000));
-
-app.get('/', function(request, response) {
-    var result = 'App is running'
-    response.send(result);
-}).listen(app.get('port'), function() {
-    console.log('App is running, server is listening on port ', app.get('port'));
 });
