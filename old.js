@@ -6,7 +6,7 @@ const airtableApiKey = 'key6iKNmX2Ynpo6k8';
 const airtableBase = 'appFRjFTs1w91uxZj';
 const airtableTable = 'Payments';
 const telegramToken = '6158390327:AAE6gOf4Mqv4F2zaNmFifhckauLdgiC9BRA';
-const chatId = '5272022550';
+const chatIds = ['593152072', '5272022550'];
 
 let lastRecordTime = null;
 
@@ -37,16 +37,18 @@ setInterval(async () => {
 
     const message = `Paid: ${amount}\nTraffic Source: ${trafficSource}\nBuyer Name: ${buyerName}\nBuyer Username: ${buyerUsername}\nService: ${service}\nServiceInfo: ${serviceInfo}`;
 
-    await bot.sendMessage(chatId, message, {
-      reply_markup: {
-        inline_keyboard: [[
-          { text: 'Yes', callback_data: `update_yulia_yes:${record.id}` },
-          { text: 'No', callback_data: `update_yulia_no:${record.id}` }
-        ]]
+    for (const chatId of chatIds) {
+        await bot.sendMessage(chatId, message, {
+          reply_markup: {
+            inline_keyboard: [[
+              { text: 'Yes', callback_data: `update_yulia_yes:${record.id}` },
+              { text: 'No', callback_data: `update_yulia_no:${record.id}` }
+            ]]
+          }
+        });
       }
-    });
-  }
-}, 10000);
+    }
+  }, 10000);
 
 bot.on('callback_query', async (callbackQuery) => {
   const action = callbackQuery.data.split(':')[0];
